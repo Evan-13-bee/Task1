@@ -2,33 +2,12 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <div id="app">
     <table>
-    <tr>
-      <td>{{name}}</td>
-      <td>{{username}}</td>
-      <td>{{id}}</td>
-      <td>{{email}}</td>
-      <td>{{city}}</td>
+    <tr v-for="item in two">
+      <td>{{item.name}}</td>
+      <td>{{item.username}}</td>
+      <td>{{item.id}}</td>
+      
     </tr>
-    <tr>
-        <td>{{name2}}</td>
-        <td>{{username2}}</td>
-        <td>{{id2}}</td>
-        <td>{{email2}}</td>
-        <td>{{city2}}</td>
-    </tr>
-    <tr>
-        <td>{{name3}}</td>
-        <td>{{username3}}</td>
-        <td>{{id3}}</td>
-        <td>{{email3}}</td>
-        <td>{{city3}}</td>
-    </tr>
-    <tr>
-        <td>{{name4}}</td>
-        <td>{{username4}}</td>
-        <td>{{id4}}</td>
-        <td>{{email4}}</td>
-        <td>{{city4}}</td>
     </table>
     </div>
 
@@ -37,63 +16,31 @@
 <script>
   let app = new Vue({
   el: '#app',
-  data() {
-    return {
-        id: '',
-        name: '',
-        username: '',
-        email: '',
-        city: '',
+  data: () => ({
+    one: '',
+    two: []
+  }),
 
-
-        id2: '',
-        name2: '',
-        username2: '',
-        email2: '',
-        city2: '',
-
-        id3: '',
-        name3: '',
-        username3: '',
-        email3: '',
-        city3: '',
-
-
-    };
+  methods: {
+    
   },
-  filters: {
-    currencydecimal(value) {
-      return value.toFixed(2);
-    }
-  },
+
   mounted() {
     axios
       .get('https://jsonplaceholder.typicode.com/users')
       .then(response => {
-        this.name = response.data[0].name
-        this.username = response.data[0].username
-        this.id = response.data[0].id
-        this.email = response.data[0].email
-        this.city = response.data[0].address.city
-
-        this.name2 = response.data[2].name
-        this.username2 = response.data[2].username
-        this.id2 = response.data[2].id
-        this.email2 = response.data[2].email
-        this.city2 = response.data[2].address.city
+        this.one = response.data
+        this.one.forEach(e => this.two.push({
+          name: e.name,
+          username: e.username,
+          id: e.id
+        }))
         
-        this.name3 = response.data[3].name
-        this.username3 = response.data[3].username
-        this.id3 = response.data[3].id
-        this.email3 = response.data[3].email
-        this.city3 = response.data[3].address.city
-
-
+        console.log(this.two)
         console.log(response);
       })
       .catch(error => {
-        console.log();
-        this.errored = true;
+        
       })
       .finally(() => (this.loading = false));
   }
